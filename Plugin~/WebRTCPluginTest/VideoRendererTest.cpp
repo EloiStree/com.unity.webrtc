@@ -33,7 +33,9 @@ namespace webrtc
 
             EXPECT_NE(nullptr, device());
 
-            context = std::make_unique<Context>(device());
+            ContextDependecies dependencies;
+            dependencies.device = device();
+            context = std::make_unique<Context>(dependencies);
         }
         ~VideoRendererTest() override { m_trackSource->RemoveSink(m_renderer.get()); }
 

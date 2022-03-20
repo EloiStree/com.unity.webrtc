@@ -35,7 +35,10 @@ public:
         m_trackSource->AddOrUpdateSink(&mock_sink_, rtc::VideoSinkWants());
 
         EXPECT_NE(nullptr, device());
-        context = std::make_unique<Context>(device());
+
+        ContextDependecies dependencies;
+        dependencies.device = device();
+        context = std::make_unique<Context>(dependencies);
     }
     ~VideoTrackSourceTest() override
     {
