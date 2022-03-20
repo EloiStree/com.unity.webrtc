@@ -4,9 +4,10 @@ namespace unity
 {
 namespace webrtc
 {
-    class IGraphicsDevice;
     using namespace ::webrtc;
 
+    class IGraphicsDevice;
+    class ProfilerMarkerFactory;
     class UnityVideoEncoderFactory : public VideoEncoderFactory
     {
     public:
@@ -20,9 +21,11 @@ namespace webrtc
         // Creates a VideoEncoder for the specified format.
         virtual std::unique_ptr<VideoEncoder> CreateVideoEncoder(const SdpVideoFormat& format) override;
 
-        UnityVideoEncoderFactory(IGraphicsDevice* gfxDevice);
+        UnityVideoEncoderFactory(IGraphicsDevice* gfxDevice, ProfilerMarkerFactory* profiler);
         ~UnityVideoEncoderFactory();
+
     private:
+        ProfilerMarkerFactory* profiler_;
         const std::unique_ptr<VideoEncoderFactory> internal_encoder_factory_;
         const std::unique_ptr<VideoEncoderFactory> native_encoder_factory_;
     };

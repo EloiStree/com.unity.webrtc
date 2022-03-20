@@ -155,11 +155,12 @@ namespace webrtc
     };
 
     class IGraphicsDevice;
+    class ProfilerMarkerFactory;
     class Plugin
     {
     public:
         static IGraphicsDevice* GraphicsDevice();
-        static IUnityInterfaces* UnityInterfaces();
+        static ProfilerMarkerFactory* ProfilerMarkerFactory();
     };
 
 } // end namespace webrtc

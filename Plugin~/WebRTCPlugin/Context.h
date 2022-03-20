@@ -14,8 +14,15 @@ namespace webrtc
 {
     using namespace ::webrtc;
 
-    class Context;
     class IGraphicsDevice;
+    class ProfilerMarkerFactory;
+    struct ContextDependecies
+    {
+        IGraphicsDevice* device;
+        ProfilerMarkerFactory* profiler;
+    };
+
+    class Context;
     class MediaStreamObserver;
     class SetSessionDescriptionObserver;
     class ContextManager
@@ -25,8 +32,7 @@ namespace webrtc
         ~ContextManager();
 
         Context* GetContext(int uid) const;
-        Context* CreateContext(
-            int uid, IGraphicsDevice* gfxDevice);
+        Context* CreateContext(int uid, ContextDependecies& dependencies);
         void DestroyContext(int uid);
         void SetCurContext(Context*);
         bool Exists(Context* context);
@@ -52,7 +58,7 @@ namespace webrtc
     {
     public:
         
-        explicit Context(IGraphicsDevice* gfxDevice);
+        explicit Context(ContextDependecies& dependencies);
         ~Context();
 
         bool ExistsRefPtr(const rtc::RefCountInterface* ptr) {

@@ -48,11 +48,8 @@ namespace webrtc
         RTC_DCHECK(s_gfxDevice.get());
         return s_gfxDevice.get();
     }
-    IUnityInterfaces* Plugin::UnityInterfaces()
-    {
-        RTC_DCHECK(s_UnityInterfaces);
-        return s_UnityInterfaces;
-    }
+
+    ProfilerMarkerFactory* Plugin::ProfilerMarkerFactory() { return s_ProfilerMarkerFactory.get(); }
 
     static libyuv::FourCC ConvertTextureFormat(UnityRenderingExtTextureFormat type)
     {

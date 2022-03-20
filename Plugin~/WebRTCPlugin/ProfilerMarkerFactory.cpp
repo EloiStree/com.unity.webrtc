@@ -35,6 +35,12 @@ namespace webrtc
         return desc;
     }
 
+    UnityProfilerCategoryId ProfilerMarkerFactory::CreateCategory(const char* name)
+    {
+        // todo(kazuki):
+        // profiler_->CreateCategory(&desc, name, category, flags, eventDataCount);
+    }
+
     std::unique_ptr<const ScopedProfiler>
     ProfilerMarkerFactory::CreateScopedProfiler(const UnityProfilerMarkerDesc& desc)
     {

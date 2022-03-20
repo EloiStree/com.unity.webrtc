@@ -430,8 +430,10 @@ extern "C"
             DebugLog("Already created context with ID %d", uid);
             return ctx;
         }
-        IGraphicsDevice* device = Plugin::GraphicsDevice();
-        ctx = ContextManager::GetInstance()->CreateContext(uid, device);
+        ContextDependecies dependencies;
+        dependencies.device = Plugin::GraphicsDevice();
+        dependencies.profiler = Plugin::ProfilerMarkerFactory();
+        ctx = ContextManager::GetInstance()->CreateContext(uid, dependencies);
         return ctx;
     }
 
