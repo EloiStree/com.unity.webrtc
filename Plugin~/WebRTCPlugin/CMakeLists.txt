@@ -20,6 +20,8 @@ target_sources(WebRTCLib
     PeerConnectionStatsCollectorCallback.cpp
     PeerConnectionStatsCollectorCallback.h
     PlatformBase.h
+    ProfilerMarkerFactory.cpp
+    ProfilerMarkerFactory.h
     SetSessionDescriptionObserver.cpp
     SetSessionDescriptionObserver.h
     ScopedProfiler.h

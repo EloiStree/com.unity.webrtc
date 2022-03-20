@@ -5,12 +5,13 @@
 #include <IUnityRenderingExtensions.h>
 
 #include "Context.h"
-#include "ScopedProfiler.h"
-#include "UnityVideoTrackSource.h"
+#include "GpuMemoryBufferPool.h"
 #include "GraphicsDevice/GraphicsDevice.h"
 #include "GraphicsDevice/GraphicsUtility.h"
+#include "ProfilerMarkerFactory.h"
+#include "ScopedProfiler.h"
+#include "UnityVideoTrackSource.h"
 #include "VideoFrame.h"
-#include "GpuMemoryBufferPool.h"
 
 #if defined(SUPPORT_VULKAN)
 #include "GraphicsDevice/Vulkan/UnityVulkanInitCallback.h"
@@ -33,6 +34,7 @@ namespace webrtc
     IUnityInterfaces* s_UnityInterfaces = nullptr;
     IUnityGraphics* s_Graphics = nullptr;
     Context* s_context = nullptr;
+    std::unique_ptr<ProfilerMarkerFactory> s_ProfilerMarkerFactory = nullptr;
     std::map<const uint32_t, std::shared_ptr<UnityVideoRenderer>> s_mapVideoRenderer;
     std::unique_ptr <Clock> s_clock;
 
@@ -229,19 +231,19 @@ void PluginLoad(IUnityInterfaces* unityInterfaces)
 #endif
 
     IUnityProfiler* unityProfiler = unityInterfaces->Get<IUnityProfiler>();
-    if (unityProfiler != nullptr)
+
+    s_ProfilerMarkerFactory = ProfilerMarkerFactory::Create(unityInterfaces);
+
+    if (s_ProfilerMarkerFactory)
     {
-        unityProfiler->CreateMarker(
-            &s_MarkerEncode,
+        s_MarkerEncode = s_ProfilerMarkerFactory->CreateMarker(
             "UnityVideoTrackSource.OnFrameCaptured",
             kUnityProfilerCategoryRender,
             kUnityProfilerMarkerFlagDefault, 0);
-        unityProfiler->CreateMarker(
-            &s_MarkerDecode,
+        s_MarkerDecode = s_ProfilerMarkerFactory->CreateMarker(
             "UnityVideoRenderer.ConvertVideoFrameToTextureAndWriteToBuffer",
             kUnityProfilerCategoryRender,
             kUnityProfilerMarkerFlagDefault, 0);
-        ScopedProfiler::UnityProfiler = unityProfiler;
     }
 
     OnGraphicsDeviceEvent(kUnityGfxDeviceEventInitialize);
@@ -302,7 +304,9 @@ static void UNITY_INTERFACE_API OnRenderEvent(int eventID, void* data)
                 encodeData->texture, device, gfxRenderer);
             Size size(encodeData->width, encodeData->height);
             {
-                ScopedProfiler profiler(*s_MarkerEncode);
+                std::unique_ptr<const ScopedProfiler> profiler;
+                if (s_ProfilerMarkerFactory)
+                    profiler = s_ProfilerMarkerFactory->CreateScopedProfiler(*s_MarkerEncode);
 
                 auto frame =
                     s_bufferPool->CreateFrame(ptr, size, encodeData->format, timestamp.us());
@@ -343,7 +347,10 @@ static void UNITY_INTERFACE_API TextureUpdateCallback(int eventID, void* data)
             return;
         s_mapVideoRenderer[params->userData] = renderer;
         {
-            ScopedProfiler profiler(*s_MarkerDecode);
+            std::unique_ptr<const ScopedProfiler> profiler;
+            if (s_ProfilerMarkerFactory)
+                profiler = s_ProfilerMarkerFactory->CreateScopedProfiler(*s_MarkerDecode);
+
             params->texData =
                 renderer->ConvertVideoFrameToTextureAndWriteToBuffer(
                 params->width, params->height, ConvertTextureFormat(params->format));
