@@ -41,16 +41,15 @@ namespace webrtc
     std::unique_ptr<IGraphicsDevice> s_gfxDevice;
     std::unique_ptr<GpuMemoryBufferPool> s_bufferPool;
 
-    IGraphicsDevice* GraphicsUtility::GetGraphicsDevice()
+    IGraphicsDevice* Plugin::GraphicsDevice()
     {
         RTC_DCHECK(s_gfxDevice.get());
         return s_gfxDevice.get();
     }
-
-    UnityGfxRenderer GraphicsUtility::GetGfxRenderer()
+    IUnityInterfaces* Plugin::UnityInterfaces()
     {
-        RTC_DCHECK(s_Graphics);
-        return s_Graphics->GetRenderer();
+        RTC_DCHECK(s_UnityInterfaces);
+        return s_UnityInterfaces;
     }
 
     static libyuv::FourCC ConvertTextureFormat(UnityRenderingExtTextureFormat type)
@@ -297,8 +296,8 @@ static void UNITY_INTERFACE_API OnRenderEvent(int eventID, void* data)
             if (source == nullptr)
                 return;
             Timestamp timestamp = s_clock->CurrentTime();
-            IGraphicsDevice* device = GraphicsUtility::GetGraphicsDevice();
-            UnityGfxRenderer gfxRenderer = GraphicsUtility::GetGfxRenderer();
+            IGraphicsDevice* device = Plugin::GraphicsDevice();
+            UnityGfxRenderer gfxRenderer = device->GetGfxRenderer();
             void* ptr = GraphicsUtility::TextureHandleToNativeGraphicsPtr(
                 encodeData->texture, device, gfxRenderer);
             Size size(encodeData->width, encodeData->height);

@@ -324,6 +324,7 @@ target_sources(WebRTCPlugin
     pch.cpp
     pch.h
     WebRTCPlugin.cpp
+    WebRTCPlugin.h
     UnityRenderEvent.cpp
 )
 

@@ -1,5 +1,7 @@
 #pragma once
 
+struct IUnityInterfaces;
+
 namespace unity
 {
 namespace webrtc
@@ -151,6 +153,14 @@ namespace webrtc
         bool iceRestart;
         bool voiceActivityDetection;
     };
-    
+
+    class IGraphicsDevice;
+    class Plugin
+    {
+    public:
+        static IGraphicsDevice* GraphicsDevice();
+        static IUnityInterfaces* UnityInterfaces();
+    };
+
 } // end namespace webrtc
 } // end namespace unity

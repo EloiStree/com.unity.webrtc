@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "WebRTCPlugin.h"
 #include "PeerConnectionObject.h"
 #include "MediaStreamObserver.h"
@@ -7,10 +8,6 @@
 #include "Context.h"
 #include "UnityAudioTrackSource.h"
 #include "GraphicsDevice/GraphicsUtility.h"
-
-#if defined(SUPPORT_VULKAN)
-#include "GraphicsDevice/Vulkan/VulkanGraphicsDevice.h"
-#endif
 
 namespace unity
 {
@@ -233,7 +230,7 @@ extern "C"
     UNITY_INTERFACE_EXPORT bool GetHardwareEncoderSupport()
     {
 #if CUDA_PLATFORM
-        IGraphicsDevice* device = GraphicsUtility::GetGraphicsDevice();
+        IGraphicsDevice* device = Plugin::GraphicsDevice();
         if(!device || !device->IsCudaSupport())
         {
             return false;
@@ -433,7 +430,7 @@ extern "C"
             DebugLog("Already created context with ID %d", uid);
             return ctx;
         }
-        IGraphicsDevice* device = GraphicsUtility::GetGraphicsDevice();
+        IGraphicsDevice* device = Plugin::GraphicsDevice();
         ctx = ContextManager::GetInstance()->CreateContext(uid, device);
         return ctx;
     }
