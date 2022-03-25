@@ -48,7 +48,7 @@ namespace webrtc
         return nullptr;
     }
 
-    Context* ContextManager::CreateContext(int uid, ContextDependecies& dependencies)
+    Context* ContextManager::CreateContext(int uid, ContextDependencies& dependencies)
     {
         auto it = s_instance->m_contexts.find(uid);
         if (it != s_instance->m_contexts.end()) {
@@ -184,7 +184,7 @@ namespace webrtc
         }
     }
 
-    Context::Context(ContextDependecies& dependencies)
+    Context::Context(ContextDependencies& dependencies)
         : m_workerThread(rtc::Thread::CreateWithSocketServer())
         , m_signalingThread(rtc::Thread::CreateWithSocketServer())
         , m_taskQueueFactory(CreateDefaultTaskQueueFactory())

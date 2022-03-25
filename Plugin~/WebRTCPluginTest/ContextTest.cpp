@@ -28,7 +28,7 @@ protected:
     explicit ContextTest()
         : container_(CreateGraphicsDeviceContainer(GetParam()))
     {
-        ContextDependecies dependencies;
+        ContextDependencies dependencies;
         dependencies.device = container_->device();
         dependencies.profiler = nullptr; 
         context = std::make_unique<Context>(dependencies);

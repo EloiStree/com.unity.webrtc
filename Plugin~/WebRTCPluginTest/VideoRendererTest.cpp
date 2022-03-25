@@ -33,7 +33,7 @@ namespace webrtc
 
             EXPECT_NE(nullptr, device());
 
-            ContextDependecies dependencies;
+            ContextDependencies dependencies;
             dependencies.device = device();
             context = std::make_unique<Context>(dependencies);
         }

@@ -16,7 +16,7 @@ namespace webrtc
 
     class IGraphicsDevice;
     class ProfilerMarkerFactory;
-    struct ContextDependecies
+    struct ContextDependencies
     {
         IGraphicsDevice* device;
         ProfilerMarkerFactory* profiler;
@@ -32,7 +32,7 @@ namespace webrtc
         ~ContextManager();
 
         Context* GetContext(int uid) const;
-        Context* CreateContext(int uid, ContextDependecies& dependencies);
+        Context* CreateContext(int uid, ContextDependencies& dependencies);
         void DestroyContext(int uid);
         void SetCurContext(Context*);
         bool Exists(Context* context);
@@ -58,7 +58,7 @@ namespace webrtc
     {
     public:
         
-        explicit Context(ContextDependecies& dependencies);
+        explicit Context(ContextDependencies& dependencies);
         ~Context();
 
         bool ExistsRefPtr(const rtc::RefCountInterface* ptr) {
