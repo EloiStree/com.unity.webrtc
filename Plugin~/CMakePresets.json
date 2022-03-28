@@ -25,6 +25,20 @@
       }
     },
     {
+      "name": "default-macos",
+      "displayName": "Default macOS Config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Xcode",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "macOS"
+          ]
+        }
+      }
+    },
+    {
       "name": "x64-windows-msvc",
       "description": "Sets x64 arch, generator, compilers",
       "inherits": "default-windows",
@@ -41,6 +55,11 @@
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
       }
+    },
+    {
+      "name": "x86_64-macos",
+      "description": "Sets x86_64 arch, generator, compilers",
+      "inherits": "default-macos"
     }
   ],
   "buildPresets": [
@@ -75,12 +94,34 @@
       "configurePreset": "x64-windows-msvc",
       "configuration": "Release",
       "cleanFirst": true
+    },
+    {
+      "name": "debug-macos",
+      "displayName": "Build Debug",
+      "description": "Debug build for macOS",
+      "configurePreset": "x86_64-macos",
+      "configuration": "Debug",
+      "verbose": true
+    },
+    {
+      "name": "release-macos",
+      "displayName": "Build Release",
+      "description": "Release build for macOS",
+      "configurePreset": "x86_64-macos",
+      "configuration": "Release",
+      "cleanFirst": true
     }
   ],
   "testPresets": [
     {
-      "name": "test-clang",
+      "name": "test-windows-clang",
       "configurePreset": "x64-windows-clang",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "test-macos",
+      "configurePreset": "x86_64-macos",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
     }
