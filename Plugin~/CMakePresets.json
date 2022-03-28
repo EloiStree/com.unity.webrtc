@@ -1,0 +1,88 @@
+﻿{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default-windows",
+      "displayName": "Default Windows Config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Visual Studio 16 2019",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Windows"
+          ]
+        }
+      }
+    },
+    {
+      "name": "x64-windows-msvc",
+      "description": "Sets x64 arch, generator, compilers",
+      "inherits": "default-windows",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "x64-windows-clang",
+      "description": "Sets x64 arch, generator, compilers",
+      "inherits": "default-windows",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug-clang",
+      "displayName": "Build Debug",
+      "description": "Debug build using Clang",
+      "configurePreset": "x64-windows-clang",
+      "configuration": "Debug",
+      "verbose": true
+    },
+    {
+      "name": "release-clang",
+      "displayName": "Build Release",
+      "description": "Release build using Clang",
+      "configurePreset": "x64-windows-clang",
+      "configuration": "Release",
+      "cleanFirst": true
+    },
+    {
+      "name": "debug-msvc",
+      "displayName": "Build Debug",
+      "description": "Debug build using MSVC",
+      "configurePreset": "x64-windows-msvc",
+      "configuration": "Debug",
+      "verbose": true
+    },
+    {
+      "name": "release-msvc",
+      "displayName": "Build Release",
+      "description": "Release build using MSVC",
+      "configurePreset": "x64-windows-msvc",
+      "configuration": "Release",
+      "cleanFirst": true
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test-clang",
+      "configurePreset": "x64-windows-clang",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    }
+  ]  
+}
