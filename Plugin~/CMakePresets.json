@@ -38,13 +38,16 @@
         }
       }
     },
-
     {
       "name": "default-linux",
       "displayName": "Default Linux Config",
       "hidden": true,
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "generator": "Unix Makefiles",
+      "environment": {
+        "ASAN_OPTIONS": "protect_shadow_gap=0:detect_leaks=1:detect_container_overflow=0",
+        "LSAN_OPTIONS": "suppressions=${sourceDir}/tools/sanitizer/lsan_suppressions.txt"
+      },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": [
