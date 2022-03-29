@@ -30,6 +30,9 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "generator": "Xcode",
+      "cacheVariables": {
+        "CMAKE_OSX_ARCHITECTURES": "arm64;x86_64"
+      },      
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": [
@@ -57,6 +60,26 @@
       }
     },
     {
+      "name": "default-ios",
+      "displayName": "Default iOS Config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Xcode",
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "iOS",
+        "CMAKE_OSX_ARCHITECTURES": "arm64;x86_64",
+        "CMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=": "NO",
+        "CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE": "YES"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "macOS"
+          ]
+        }
+      }
+    },    
+    {
       "name": "x64-windows-msvc",
       "description": "Sets x64 arch, generator, compilers",
       "inherits": "default-windows",
@@ -75,8 +98,8 @@
       }
     },
     {
-      "name": "x86_64-macos",
-      "description": "Sets x86_64 arch, generator, compilers",
+      "name": "macos",
+      "description": "Sets x86_64 and arm64 arch, generator, compilers",
       "inherits": "default-macos"
     },
     {
@@ -88,6 +111,11 @@
         "CMAKE_CXX_COMPILER": "clang++-10",
         "CMAKE_CXX_FLAGS": "-stdlib=libc++"
       }
+    },
+    {
+      "name": "ios",
+      "description": "Sets x86_64 and arm64 arch, generator, compilers",
+      "inherits": "default-ios"
     }
   ],
   "buildPresets": [
@@ -127,7 +155,7 @@
       "name": "debug-macos",
       "displayName": "Build Debug",
       "description": "Debug build for macOS",
-      "configurePreset": "x86_64-macos",
+      "configurePreset": "macos",
       "configuration": "Debug",
       "verbose": true
     },
@@ -135,7 +163,7 @@
       "name": "release-macos",
       "displayName": "Build Release",
       "description": "Release build for macOS",
-      "configurePreset": "x86_64-macos",
+      "configurePreset": "macos",
       "configuration": "Release",
       "cleanFirst": true
     },
@@ -165,7 +193,7 @@
     },
     {
       "name": "test-macos",
-      "configurePreset": "x86_64-macos",
+      "configurePreset": "macos",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
     }
