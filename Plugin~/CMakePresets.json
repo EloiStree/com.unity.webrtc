@@ -38,6 +38,21 @@
         }
       }
     },
+
+    {
+      "name": "default-linux",
+      "displayName": "Default Linux Config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Unix Makefiles",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Linux"
+          ]
+        }
+      }
+    },
     {
       "name": "x64-windows-msvc",
       "description": "Sets x64 arch, generator, compilers",
@@ -60,6 +75,16 @@
       "name": "x86_64-macos",
       "description": "Sets x86_64 arch, generator, compilers",
       "inherits": "default-macos"
+    },
+    {
+      "name": "x86_64-linux",
+      "description": "Sets x86_64 arch, generator, compilers",
+      "inherits": "default-linux",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-10",
+        "CMAKE_CXX_COMPILER": "clang++-10",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++"
+      }
     }
   ],
   "buildPresets": [
@@ -108,6 +133,22 @@
       "displayName": "Build Release",
       "description": "Release build for macOS",
       "configurePreset": "x86_64-macos",
+      "configuration": "Release",
+      "cleanFirst": true
+    },
+    {
+      "name": "debug-linux",
+      "displayName": "Build Debug",
+      "description": "Debug build for Linux",
+      "configurePreset": "x86_64-linux",
+      "configuration": "Debug",
+      "verbose": true
+    },
+    {
+      "name": "release-linux",
+      "displayName": "Build Release",
+      "description": "Release build for Linux",
+      "configurePreset": "x86_64-linux",
       "configuration": "Release",
       "cleanFirst": true
     }
