@@ -78,7 +78,20 @@
           ]
         }
       }
-    },    
+    },
+    {
+      "name": "default-android",
+      "displayName": "Default Android Config",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "Android",
+        "CMAKE_ANDROID_API_MIN": "24",
+        "CMAKE_ANDROID_NDK": "$env{ANDROID_SDK}",
+        "CMAKE_ANDROID_STL_TYPE": "c++_static"
+      }
+    },
     {
       "name": "x64-windows-msvc",
       "description": "Sets x64 arch, generator, compilers",
@@ -116,6 +129,22 @@
       "name": "ios",
       "description": "Sets x86_64 and arm64 arch, generator, compilers",
       "inherits": "default-ios"
+    },
+    {
+      "name": "armv7-android",
+      "description": "Sets armv7 arch, generator, compilers",
+      "inherits": "default-android",
+      "cacheVariables": {
+        "CMAKE_ANDROID_ARCH_ABI": "armeabi-v7a"
+      }
+    },
+    {
+      "name": "arm64-android",
+      "description": "Sets arm64 arch, generator, compilers",
+      "inherits": "default-android",
+      "cacheVariables": {
+        "CMAKE_ANDROID_ARCH_ABI": "arm64-v8a"
+      }
     }
   ],
   "buildPresets": [
@@ -182,6 +211,22 @@
       "configurePreset": "x86_64-linux",
       "configuration": "Release",
       "cleanFirst": true
+    },
+    {
+      "name": "debug-android",
+      "displayName": "Build Debug",
+      "description": "Debug build for Android",
+      "configurePreset": "arm64-android",
+      "configuration": "Debug",
+      "verbose": true
+    },
+    {
+      "name": "release-android",
+      "displayName": "Build Release",
+      "description": "Release build for Linux",
+      "configurePreset": "arm64-android",
+      "configuration": "Release",
+      "cleanFirst": true
     }
   ],
   "testPresets": [
@@ -194,6 +239,12 @@
     {
       "name": "test-macos",
       "configurePreset": "macos",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "test-linux",
+      "configurePreset": "x86_64-linux",
       "output": {"outputOnFailure": true},
       "execution": {"noTestsAction": "error", "stopOnFailure": true}
     }
